@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    tags:
+      - 'v*.*.*'
 
 jobs:
   build:
@@ -29,6 +31,8 @@ jobs:
           images: sutility/sutility
           tags: |
             type=raw,value=latest
+            type=ref,event=tag
+            type=semver,pattern={{version}}
 
       - name: Build and push Docker image
         id: build-and-push
