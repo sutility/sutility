@@ -56,6 +56,16 @@ jobs:
             type=ref,event=tag
             type=semver,pattern={{version}}
 
+      - name: extract docker metadata for sutility-jq
+        id: meta-jq
+        uses: docker/metadata-action@v5
+        with:
+          images: sutility/sutility-jq
+          tags: |
+            type=raw,value=latest
+            type=ref,event=tag
+            type=semver,pattern={{version}}
+
       - name: build and push main docker image
         id: build-and-push-main
         uses: docker/build-push-action@v5
@@ -91,6 +101,19 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta-openssh.outputs.tags }}
           labels: ${{ steps.meta-openssh.outputs.labels }}
+          platforms: linux/amd64,linux/arm64
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: build and push sutility-jq
+        id: build-and-push-jq
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile.jq
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta-jq.outputs.tags }}
+          labels: ${{ steps.meta-jq.outputs.labels }}
           platforms: linux/amd64,linux/arm64
           cache-from: type=gha
           cache-to: type=gha,mode=max

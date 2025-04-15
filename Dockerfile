@@ -2,7 +2,7 @@ FROM --platform=$BUILDPLATFORM alpine:latest
 ARG TARGETARCH
 
 
-RUN apk update && apk add --no-cache curl bash openssh
+RUN apk update && apk add --no-cache curl bash openssh jq
 
 
 # RUN KUBECTL_VERSION=$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt) \
