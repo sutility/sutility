@@ -26,8 +26,8 @@ jobs:
           username: sutility
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: extract docker metadata
-        id: meta
+      - name: extract docker metadata for main image
+        id: meta-main
         uses: docker/metadata-action@v5
         with:
           images: sutility/sutility
@@ -36,15 +36,61 @@ jobs:
             type=ref,event=tag
             type=semver,pattern={{version}}
 
-      - name: build and push docker image
-        id: build-and-push
+      - name: extract docker metadata for sutility-kubectl
+        id: meta-kubectl
+        uses: docker/metadata-action@v5
+        with:
+          images: sutility/sutility-kubectl
+          tags: |
+            type=raw,value=latest
+            type=ref,event=tag
+            type=semver,pattern={{version}}
+
+      - name: extract docker metadata for sutility-openssh
+        id: meta-openssh
+        uses: docker/metadata-action@v5
+        with:
+          images: sutility/sutility-openssh
+          tags: |
+            type=raw,value=latest
+            type=ref,event=tag
+            type=semver,pattern={{version}}
+
+      - name: build and push main docker image
+        id: build-and-push-main
         uses: docker/build-push-action@v5
         with:
           context: .
           file: ./Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ steps.meta-main.outputs.tags }}
+          labels: ${{ steps.meta-main.outputs.labels }}
+          platforms: linux/amd64,linux/arm64
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: build and push sutility-kubectl
+        id: build-and-push-kubectl
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile.kubectl
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta-kubectl.outputs.tags }}
+          labels: ${{ steps.meta-kubectl.outputs.labels }}
+          platforms: linux/amd64,linux/arm64
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: build and push sutility-openssh
+        id: build-and-push-openssh
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile.openssh
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta-openssh.outputs.tags }}
+          labels: ${{ steps.meta-openssh.outputs.labels }}
           platforms: linux/amd64,linux/arm64
           cache-from: type=gha
           cache-to: type=gha,mode=max
