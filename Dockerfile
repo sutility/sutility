@@ -1,0 +1,18 @@
+FROM --platform=$BUILDPLATFORM alpine:latest
+ARG TARGETARCH
+
+
+RUN apk update && apk add --no-cache curl bash openssh
+
+
+RUN KUBECTL_VERSION=$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt) \
+ && curl -LO "https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/${TARGETARCH}/kubectl" \
+ && chmod +x kubectl \
+ && mv kubectl /usr/local/bin/kubectl
+
+
+RUN adduser -D -s /bin/sh sutility
+USER sutility
+
+
+CMD ["/bin/bash"]
