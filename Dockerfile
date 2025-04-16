@@ -5,9 +5,10 @@ ARG TARGETARCH
 RUN apk update && apk add --no-cache curl bash openssh jq
 
 
-# RUN KUBECTL_VERSION=$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt) \
 RUN KUBECTL_VERSION="v1.32.3" \
- && curl -LO "https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/${TARGETARCH}/kubectl" \
+ && curl -LO "https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/${TARGETARCH}/kubectl" \
+ && curl -LO "https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/${TARGETARCH}/kubectl.sha256" \
+ && echo "$(cat kubectl.sha256)  kubectl" | sha256sum -c \
  && chmod +x kubectl \
  && mv kubectl /usr/local/bin/kubectl
 
