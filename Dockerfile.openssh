@@ -7,6 +7,7 @@ RUN apk update && apk add --no-cache bash openssh
 
 RUN adduser -D -s /bin/sh sutility
 USER sutility
+WORKDIR /home/sutility
 
 
 CMD ["/bin/bash"]

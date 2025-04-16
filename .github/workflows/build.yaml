@@ -7,7 +7,7 @@ on:
     tags:
       - 'v*.*.*'
   schedule:
-    - cron: '0 0 * * 5'  # every Friday at 00:00 UTC
+    - cron: '0 0 * * 5'  # every friday at 00:00 UTC
 
 jobs:
   build:
@@ -26,41 +26,13 @@ jobs:
           username: sutility
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+
+
       - name: extract docker metadata for main image
         id: meta-main
         uses: docker/metadata-action@v5
         with:
           images: sutility/sutility
-          tags: |
-            type=raw,value=latest
-            type=ref,event=tag
-            type=semver,pattern={{version}}
-
-      - name: extract docker metadata for sutility-kubectl
-        id: meta-kubectl
-        uses: docker/metadata-action@v5
-        with:
-          images: sutility/sutility-kubectl
-          tags: |
-            type=raw,value=latest
-            type=ref,event=tag
-            type=semver,pattern={{version}}
-
-      - name: extract docker metadata for sutility-openssh
-        id: meta-openssh
-        uses: docker/metadata-action@v5
-        with:
-          images: sutility/sutility-openssh
-          tags: |
-            type=raw,value=latest
-            type=ref,event=tag
-            type=semver,pattern={{version}}
-
-      - name: extract docker metadata for sutility-jq
-        id: meta-jq
-        uses: docker/metadata-action@v5
-        with:
-          images: sutility/sutility-jq
           tags: |
             type=raw,value=latest
             type=ref,event=tag
@@ -79,6 +51,18 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
+
+
+      - name: extract docker metadata for sutility-kubectl
+        id: meta-kubectl
+        uses: docker/metadata-action@v5
+        with:
+          images: sutility/sutility-kubectl
+          tags: |
+            type=raw,value=latest
+            type=ref,event=tag
+            type=semver,pattern={{version}}
+
       - name: build and push sutility-kubectl
         id: build-and-push-kubectl
         uses: docker/build-push-action@v5
@@ -92,6 +76,18 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
+
+
+      - name: extract docker metadata for sutility-openssh
+        id: meta-openssh
+        uses: docker/metadata-action@v5
+        with:
+          images: sutility/sutility-openssh
+          tags: |
+            type=raw,value=latest
+            type=ref,event=tag
+            type=semver,pattern={{version}}
+
       - name: build and push sutility-openssh
         id: build-and-push-openssh
         uses: docker/build-push-action@v5
@@ -104,6 +100,18 @@ jobs:
           platforms: linux/amd64,linux/arm64
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+
+
+      - name: extract docker metadata for sutility-jq
+        id: meta-jq
+        uses: docker/metadata-action@v5
+        with:
+          images: sutility/sutility-jq
+          tags: |
+            type=raw,value=latest
+            type=ref,event=tag
+            type=semver,pattern={{version}}
 
       - name: build and push sutility-jq
         id: build-and-push-jq
