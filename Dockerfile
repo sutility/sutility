@@ -14,6 +14,7 @@ RUN KUBECTL_VERSION="v1.32.3" \
 
 RUN adduser -D -s /bin/sh sutility
 USER sutility
+WORKDIR /home/sutility
 
 
 CMD ["/bin/bash"]
