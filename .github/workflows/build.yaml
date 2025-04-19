@@ -7,7 +7,7 @@ on:
     tags:
       - 'v*.*.*'
   schedule:
-    - cron: '0 0 * * 6'  # every friday at 00:00 UTC
+    - cron: '0 0 * * 6'  # every saturday at 00:00 UTC
 
 jobs:
   build:
@@ -50,6 +50,8 @@ jobs:
           platforms: linux/amd64,linux/arm64
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          sbom: true
+          provenance: mode=max
 
 
 
@@ -75,6 +77,8 @@ jobs:
           platforms: linux/amd64,linux/arm64
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          sbom: true
+          provenance: mode=max
 
 
 
@@ -100,6 +104,8 @@ jobs:
           platforms: linux/amd64,linux/arm64
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          sbom: true
+          provenance: mode=max
 
 
 
@@ -125,3 +131,5 @@ jobs:
           platforms: linux/amd64,linux/arm64
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          sbom: true
+          provenance: mode=max
