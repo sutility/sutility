@@ -2,7 +2,8 @@ FROM --platform=$BUILDPLATFORM alpine:latest
 ARG TARGETARCH
 
 
-RUN apk update && apk add --no-cache curl bash openssh jq yq
+RUN apk update && apk add --no-cache curl bash openssh jq && \
+    apk --no-cache --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community add yq
 
 
 RUN KUBECTL_VERSION="v1.33.0-rc.1" \
