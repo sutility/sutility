@@ -160,3 +160,30 @@ jobs:
           cache-to: type=gha,mode=max
           sbom: true
           provenance: mode=max
+
+
+
+      - name: extract docker metadata for sutility-oras
+        id: meta-oras
+        uses: docker/metadata-action@v5
+        with:
+          images: sutility/sutility-oras
+          tags: |
+            type=raw,value=latest
+            type=ref,event=tag
+            type=semver,pattern={{version}}
+
+      - name: build and push sutility-oras
+        id: build-and-push-oras
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile.oras
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta-oras.outputs.tags }}
+          labels: ${{ steps.meta-oras.outputs.labels }}
+          platforms: linux/amd64,linux/arm64
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          sbom: true
+          provenance: mode=max
