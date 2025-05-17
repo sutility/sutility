@@ -1,0 +1,23 @@
+FROM --platform=$BUILDPLATFORM alpine:latest
+ARG TARGETARCH
+
+
+RUN apk update && apk add --no-cache curl bash
+
+
+RUN TRIVY_VERSION="0.62.1" \
+ && TRIVY_ARCH="Linux-64bit"; if [ "${TARGETARCH}" = "arm64" ]; then TRIVY_ARCH="Linux-ARM64"; fi \
+ && curl -LO "https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}/trivy_${TRIVY_VERSION}_${TRIVY_ARCH}.tar.gz" \
+ && curl -LO "https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}/trivy_${TRIVY_VERSION}_checksums.txt" \
+ && echo "$(cat trivy_${TRIVY_VERSION}_checksums.txt | grep trivy_${TRIVY_VERSION}_${TRIVY_ARCH}.tar.gz)" | sha256sum -c \
+ && tar -xzvf "trivy_${TRIVY_VERSION}_${TRIVY_ARCH}.tar.gz" "trivy" \
+ && rm "trivy_${TRIVY_VERSION}_${TRIVY_ARCH}.tar.gz" \
+ && mv trivy /usr/local/bin/trivy
+
+
+RUN adduser -D -s /bin/sh sutility
+USER sutility
+WORKDIR /home/sutility
+
+
+CMD ["/bin/bash"]
