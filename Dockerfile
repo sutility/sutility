@@ -2,8 +2,9 @@ FROM --platform=$BUILDPLATFORM alpine:latest
 ARG TARGETARCH
 
 
-RUN apk update && apk add --no-cache curl bash openssh jq && \
-    apk --no-cache --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community add yq
+RUN apk update && apk add --no-cache curl bash openssh jq git git-lfs gpg less openssh patch perl \
+ && apk --no-cache --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community add yq \
+ && git lfs install
 
 
 RUN KUBECTL_VERSION="1.33.1" \
