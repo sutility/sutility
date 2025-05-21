@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM alpine:latest
+FROM --platform=$TARGETPLATFORM alpine:latest
 ARG TARGETARCH
 
 
@@ -9,6 +9,7 @@ RUN ORAS_VERSION="1.2.3" \
  && curl -LO "https://github.com/oras-project/oras/releases/download/v${ORAS_VERSION}/oras_${ORAS_VERSION}_linux_${TARGETARCH}.tar.gz" \
  && curl -LO "https://github.com/oras-project/oras/releases/download/v${ORAS_VERSION}/oras_${ORAS_VERSION}_checksums.txt" \
  && echo "$(cat oras_${ORAS_VERSION}_checksums.txt | grep oras_${ORAS_VERSION}_linux_${TARGETARCH}.tar.gz)" | sha256sum -c \
+ && rm "./oras_${ORAS_VERSION}_checksums.txt" \
  && tar -xzvf "oras_${ORAS_VERSION}_linux_${TARGETARCH}.tar.gz" "oras" \
  && rm "oras_${ORAS_VERSION}_linux_${TARGETARCH}.tar.gz" \
  && mv oras /usr/local/bin/oras
