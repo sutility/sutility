@@ -2,22 +2,13 @@ FROM --platform=$TARGETPLATFORM alpine:latest
 ARG TARGETARCH
 
 
-RUN GIT_LFS_VERSION="3.6.1" \
- && apk update \
- && apk add --no-cache curl bash  \
+RUN apk update \
+ && apk add --no-cache bash \
+ && apk add --no-cache curl \
  && apk add --no-cache openssh \
  && apk add --no-cache jq \
  && apk --no-cache --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community add yq \
- && apk --no-cache add git gpg less patch perl \
- && curl -LO "https://github.com/git-lfs/git-lfs/releases/download/v${GIT_LFS_VERSION}/git-lfs-linux-${TARGETARCH}-v${GIT_LFS_VERSION}.tar.gz" \
- && curl -LO "https://github.com/git-lfs/git-lfs/releases/download/v${GIT_LFS_VERSION}/sha256sums.asc" \
- && echo "$(cat sha256sums.asc | grep git-lfs-linux-${TARGETARCH}-v${GIT_LFS_VERSION}.tar.gz)" | sha256sum -c \
- && rm ./sha256sums.asc \
- && tar -xzvf "./git-lfs-linux-${TARGETARCH}-v${GIT_LFS_VERSION}.tar.gz" \
- && rm "./git-lfs-linux-${TARGETARCH}-v${GIT_LFS_VERSION}.tar.gz" \
- && chmod +x "./git-lfs-${GIT_LFS_VERSION}/install.sh" \
- && "./git-lfs-${GIT_LFS_VERSION}/install.sh" \
- && rm -rf "./git-lfs-${GIT_LFS_VERSION}"
+ && apk --no-cache add git git-lfs gpg less openssh patch perl && git lfs install
 
 
 RUN KUBECTL_VERSION="1.33.1" \

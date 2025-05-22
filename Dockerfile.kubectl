@@ -2,7 +2,9 @@ FROM --platform=$TARGETPLATFORM alpine:latest
 ARG TARGETARCH
 
 
-RUN apk update && apk add --no-cache curl bash
+RUN apk update \
+ && apk add --no-cache bash \
+ && apk add --no-cache curl
 
 
 RUN KUBECTL_VERSION="1.33.1" \

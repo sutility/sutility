@@ -2,8 +2,9 @@ FROM --platform=$TARGETPLATFORM alpine:latest
 ARG TARGETARCH
 
 
-RUN apk update && apk add --no-cache bash && \
-    apk --no-cache --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community add yq
+RUN apk update \
+ && apk add --no-cache bash \
+ && apk --no-cache --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community add yq
 
 
 RUN adduser -D -s /bin/sh sutility

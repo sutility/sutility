@@ -2,7 +2,9 @@ FROM --platform=$TARGETPLATFORM alpine:latest
 ARG TARGETARCH
 
 
-RUN apk update && apk add --no-cache bash openssh
+RUN apk update \
+ && apk add --no-cache bash \
+ && apk add --no-cache openssh
 
 
 RUN adduser -D -s /bin/sh sutility
