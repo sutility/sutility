@@ -6,6 +6,7 @@ RUN apk update \
  && apk add --no-cache bash \
  && apk add --no-cache curl \
  && apk add --no-cache openssh \
+ && apk add --no-cache openssl \
  && apk add --no-cache jq \
  && apk --no-cache --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community add yq \
  && apk --no-cache add git git-lfs gpg less openssh patch perl && git lfs install
