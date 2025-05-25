@@ -1,0 +1,15 @@
+FROM --platform=$TARGETPLATFORM alpine:latest
+ARG TARGETARCH
+
+
+RUN apk update \
+ && apk add --no-cache bash \
+ && apk add --no-cache apache2-utils
+
+
+RUN adduser -D -s /bin/sh sutility
+USER sutility
+WORKDIR /home/sutility
+
+
+CMD ["/bin/bash"]

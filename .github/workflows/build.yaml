@@ -190,6 +190,33 @@ jobs:
 
 
 
+      - name: extract docker metadata for sutility-apache2-utils
+        id: meta-apache2-utils
+        uses: docker/metadata-action@v5
+        with:
+          images: sutility/sutility-apache2-utils
+          tags: |
+            type=raw,value=latest
+            type=ref,event=tag
+            type=semver,pattern={{version}}
+
+      - name: build and push sutility-apache2-utils
+        id: build-and-push-apache2-utils
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile.apache2-utils
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta-apache2-utils.outputs.tags }}
+          labels: ${{ steps.meta-apache2-utils.outputs.labels }}
+          platforms: linux/amd64,linux/arm64
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          sbom: true
+          provenance: mode=max
+
+
+
       - name: extract docker metadata for sutility-oras
         id: meta-oras
         uses: docker/metadata-action@v5
